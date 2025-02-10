@@ -1,0 +1,86 @@
+---
+title: Cloud Fundamentals
+---
+
+<h1>Cloud Fundamentals</h1>
+
+<!-- Tab Links -->
+<div class="tabs">
+  <button class="tablink" onclick="openTab(event, 'MainPage')">Main Page</button>
+  <button class="tablink" onclick="openTab(event, 'LearningResources')">Learning Resources</button>
+  <button class="tablink" onclick="openTab(event, 'PracticeQuestions')">Practice Questions</button>
+  <button class="tablink" onclick="openTab(event, 'MockTest')">Mock Test</button>
+</div>
+
+<!-- Tab Content -->
+<div id="MainPage" class="tabcontent">
+  <h3>Main Page</h3>
+  <p>Welcome to the main page</p>
+</div>
+
+<div id="LearningResources" class="tabcontent">
+  <h3>Learning Resources</h3>
+  <p>List of learning resources...</p>
+</div>
+
+<div id="PracticeQuestions" class="tabcontent">
+  <h3>Practice Questions</h3>
+  <p>Practice question list...</p>
+</div>
+
+<div id="MockTest" class="tabcontent">
+  <h3>Mock Test</h3>
+  <p>Mock test content...</p>
+</div>
+
+<!-- JavaScript for Tabs -->
+<script>
+  function openTab(evt, tabName) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+      tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tablink");
+    for (i = 0; i < tablinks.length; i++) {
+      tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(tabName).style.display = "block";
+    evt.currentTarget.className += " active";
+  }
+  
+  // Set the default tab to be open
+  document.getElementsByClassName("tablink")[0].click();
+</script>
+
+<style>
+  /* Tab styling */
+  .tabs {
+    display: flex;
+    justify-content: space-around;
+  }
+  
+  .tablink {
+    background-color: #f1f1f1;
+    padding: 10px;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    font-size: 17px;
+  }
+
+  .tablink:hover {
+    background-color: #ddd;
+  }
+
+  .tabcontent {
+    display: none;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+  }
+
+  .tablink.active {
+    background-color: #ccc;
+  }
+</style>
