@@ -19,8 +19,26 @@ title: Cloud Fundamentals
 </div>
 
 <div id="LearningResources" class="tabcontent">
-  <h3>Learning Resources</h3>
-  <p>List of learning resources...</p>
+
+  <div class="resource" style="margin-bottom: 100px;">
+    {% capture content %}{% include aws_fargate.md %}{% endcapture %}
+    {{ content | markdownify }}
+  </div>
+
+  <div class="resource" style="margin-bottom: 100px;">
+    {% capture content %}{% include aws_ebs.md %}{% endcapture %}
+    {{ content | markdownify }}
+  </div>
+
+  <div class="resource" style="margin-bottom: 100px;">
+    {% capture content %}{% include aws_lambda.md %}{% endcapture %}
+    {{ content | markdownify }}
+  </div>
+
+
+</div>
+  
+
 </div>
 
 <div id="PracticeQuestions" class="tabcontent">
