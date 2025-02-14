@@ -1,4 +1,4 @@
-## Cloud Fundamentals (LEGACY)
+## Cloud Fundamentals
 
 Welcome to the **Cloud Fundamentals** page, where you will find essential information about the core services and tools in cloud computing. Whether you are just starting your cloud journey or looking to expand your knowledge, this page will provide valuable resources to guide you.
 

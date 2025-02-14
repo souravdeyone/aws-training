@@ -2,7 +2,28 @@
 title: Cloud Fundamentals
 ---
 
-<h1>Cloud Fundamentals</h1>
+<html lang="en">
+<head>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.0.16/marked.min.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exam Preparation</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<h1 id="examHeader" style="margin-bottom: 10px;">AWS Exam Preparation</h1>
+
+
+<!-- Exam Dropdown -->
+<div class="exam-dropdown" style="margin-bottom: 25px;">
+  <select id="examSelect" onchange="changeHeader()">
+    <option value="awsCloudPractitioner">AWS Cloud Practitioner (Foundational)</option>
+    <option value="awsAIPractitioner">AWS AI Practitioner (Foundational)</option>
+    <option value="awsSolutionArchitect">AWS Solution Architect (Associate)</option>
+
+  </select>
+</div>
 
 <!-- Tab Links -->
 <div class="tabs">
@@ -15,13 +36,10 @@ title: Cloud Fundamentals
 <!-- Tab Content -->
 <div id="MainPage" class="tabcontent">
   <div class="resource" style="margin-bottom: 100px;">
-    {% capture content %}{% include aws_main.md %}{% endcapture %}
-    {{ content | markdownify }}
   </div>
 </div>
 
 <div id="LearningResources" class="tabcontent">
-
   <div class="resource" style="margin-bottom: 100px;">
     {% capture content %}{% include aws_fargate.md %}{% endcapture %}
     {{ content | markdownify }}
@@ -74,7 +92,46 @@ title: Cloud Fundamentals
 
 
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
+  // Function to update the header when the dropdown value changes
+  function changeHeader() {
+    const selectedExam = document.getElementById("examSelect").value;
+    const examHeader = document.getElementById("examHeader");
+    const mainPage = document.getElementById("MainPage");
+
+    if (selectedExam === 'awsCloudPractitioner') {
+      examHeader.textContent = 'Exam Prep: AWS Cloud Practitioner';
+    } else if (selectedExam === 'awsSolutionArchitect') {
+      examHeader.textContent = 'Exam Prep: AWS Solution Architect';
+    } else if (selectedExam === 'awsAIPractitioner') {
+      examHeader.textContent = 'Exam Prep: AWS AI Practitioner';
+    }
+
+    const fileMap = {
+    awsAIPractitioner: "content/aws_main_ai_practitioner.md",
+    awsCloudPractitioner: "content/aws_main_cloud_practitioner.md",
+    awsSolutionArchitect: "content/aws_main_solution_architect.md"
+    };
+
+    const file = fileMap[selectedExam]
+
+
+    fetch(file)
+    .then(response => response.text())
+    .then(markdown => {
+        mainPage.innerHTML = marked.parse(markdown); // Convert markdown to HTML
+    })
+    .catch(error => {
+        mainPage.innerHTML = "<p>Error loading content.</p>";
+        console.error("Error loading file:", error);
+    });
+  }
+  document.addEventListener("DOMContentLoaded", changeHeader);
+
+</script>
+
+
+<script>
+  async function loadExamQuestions(){
     console.log("Fetching questions...");
 
     fetch("https://corsproxy.io/?https://ltxgq36hil.execute-api.ap-southeast-2.amazonaws.com/DEV?count=10")
@@ -82,16 +139,55 @@ title: Cloud Fundamentals
       .then(data => {
         const questionList = document.getElementById("questionList");
         questionList.innerHTML = ""; // Clear existing content
+        
+        console.log(data)
+
         data.forEach(question => {
         const li = document.createElement("li");
-
+        
         const questionText = document.createElement("p");
         questionText.textContent = `Question: ${question['question']}`;
+
+        // Options as buttons
+        const optionsList = document.createElement("ul");
+        const optionButtons = []; // Store buttons to reset later
+
+        question['options'].forEach(option => {
+          const liOption = document.createElement("li");
+          const optionButton = document.createElement("button");
+          optionButton.textContent = option;
+
+          optionButton.addEventListener("click", () => {
+            // Reset all buttons before marking the selected one
+            optionButtons.forEach(btn => {
+              btn.style.backgroundColor = ""; // Reset background color
+              btn.textContent = btn.dataset.originalText; // Reset text
+            });
+
+            // Mark the selected button
+            if (option === question['answer']) {
+              optionButton.style.backgroundColor = "green"; // Correct answer
+              optionButton.textContent += " ✅";
+            } else {
+              optionButton.style.backgroundColor = "red"; // Incorrect answer
+              optionButton.textContent += " ❌";
+            }
+          });
+
+          // Store the button with its original text
+          optionButton.dataset.originalText = option;
+          optionButtons.push(optionButton);
+
+          liOption.appendChild(optionButton);
+          optionsList.appendChild(liOption);
+        });
+
 
         const answerText = document.createElement("p");
         answerText.textContent = `Answer: ${question['answer']}`;
 
         li.appendChild(questionText);
+        li.appendChild(optionsList);
         li.appendChild(answerText);
 
         questionList.appendChild(li);
@@ -101,7 +197,9 @@ title: Cloud Fundamentals
       .catch(error => {
         console.error("Error fetching questions:", error);
       });
-  });
+  };
+  document.addEventListener("DOMContentLoaded", loadExamQuestions)
+
 </script>
 
 <style>
